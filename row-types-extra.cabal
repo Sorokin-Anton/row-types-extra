@@ -1,0 +1,52 @@
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.34.4.
+--
+-- see: https://github.com/sol/hpack
+
+name:           row-types-extra
+version:        0.1.0.0
+homepage:       https://github.com/githubuser/row-swagger#readme
+bug-reports:    https://github.com/githubuser/row-swagger/issues
+author:         Author name here
+maintainer:     example@example.com
+copyright:      2021 Author name here
+license:        BSD3
+build-type:     Simple
+
+source-repository head
+  type: git
+  location: https://github.com/githubuser/row-swagger
+
+library
+  exposed-modules:
+      Data.Row.Instances.Arbitrary
+      Data.Row.Instances.Swagger
+      Data.Row.Tuples
+      Data.Row.WebRecords
+      Example
+  other-modules:
+      Paths_row_types_extra
+  hs-source-dirs:
+      src
+  ghc-options: -Wall -Werror -j
+  build-depends:
+      QuickCheck
+    , aeson
+    , base >=4.7 && <5
+    , bytestring
+    , constraints
+    , generic-lens
+    , generic-random
+    , lens
+    , record-dot-preprocessor
+    , record-hasfield
+    , row-types
+    , servant-server
+    , servant-swagger
+    , servant-swagger-ui
+    , swagger2
+    , template-haskell
+    , text
+    , warp
+  default-language: Haskell2010
