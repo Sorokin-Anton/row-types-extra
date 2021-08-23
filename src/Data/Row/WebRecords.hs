@@ -27,13 +27,13 @@ import GHC.Records.Extra (HasField(..))
 import Data.Row.Records (update, rename, restrict)
 import Data.Row.Tuples
 
+concat <$> mapM mkMultilabelTupleInstance [2..25]
 
 instance (a ~ (r .! name), KnownSymbol name) => HasField name (Rec r) a where
   hasField r = (set, get) where
     set a = update (Label @name) a r
     get = r .! Label @name
 
-concat <$> mapM mkMultilabelTupleInstance [2..25]
 
 -- >>> :t label (#a, #b)
 -- label (#a, #b)

@@ -14,6 +14,13 @@ module Data.Row.Tuples where
 import Data.Row.Records
     ( KnownSymbol, Rec, type (.+), (.==), type (.==), Label, (.+) )
 import Language.Haskell.TH
+    ( newName,
+      varE,
+      varT,
+      Q,
+      Pat(VarP, TupP),
+      Type(TupleT, VarT, AppT),
+      Dec )
 import Control.Monad (replicateM, zipWithM)
 
 
@@ -34,6 +41,8 @@ instance KnownSymbol l =>  MultiLabel (Label l) a where
 
 
 -- Example: see `Constraint trick` for understanding
+-- I don't know why this can't compile without braces in `a .== b .+ (c .== d .+ e .== f)`
+
 -- type instance  LabelF (Label l1, Label l2, Label l3) (a1 , a2, a3) = (a1, a2, a3) -> Rec ( l1 .== a1 .+ (l2 .== a2 .+ l3 .== a3))
 -- instance ((KnownSymbol l1,
 --            KnownSymbol l2, KnownSymbol l3),
@@ -69,14 +78,14 @@ mkMultilabelTupleInstance len = do
 
       tupleVarsPattern = TupP (map VarP tupleVarNames)
 
-      expr = foldr1 (\a b -> [|$a .+ $b|] ) $ zipWith (\l e -> [|$(varE l) .== $(varE e)|]) labelVarNames tupleVarNames
+      expr = foldr1 (\a b -> [| $a .+ $b |] ) $ zipWith (\l e -> [|$(varE l) .== $(varE e)|]) labelVarNames tupleVarNames
 
-      typeLevelRecords = foldr1 (\a b -> [t|$a .+ $b|] ) $ zipWith (\l e -> [t|$(varT l) .== $(varT e)|]) labelSymbols tupleVarNames
+      typeLevelRecords = foldr1 (\a b -> [t| $a .+ $b |] ) $ zipWith (\l e -> [t| $(varT l) .== $(varT e) |]) labelSymbols tupleVarNames
 
       tupleConstrForTF =foldl  AppT (TupleT len) (map VarT tupleVarNames)
 
-  ks <- mapM (\s -> [t|KnownSymbol $(pure s)|]) (map VarT labelSymbols)
-  ls <- mapM (\s -> [t|Label $(pure s)|]) (map VarT labelSymbols)
+  ks <- mapM (\s -> [t| KnownSymbol $(pure s) |]) (map VarT labelSymbols)
+  ls <- mapM (\s -> [t| Label $(pure s) |]) (map VarT labelSymbols)
   es <- zipWithM (\s n -> [t| Label $(pure s) ~ $(pure n) |]) (map VarT labelSymbols) labelNames
 
   let constraintKnownSymbols = foldl  AppT (TupleT len) ks
@@ -87,4 +96,4 @@ mkMultilabelTupleInstance len = do
   [d|
     type instance LabelF $(pure lst) $(pure tupleConstrForTF) = $(pure tupleConstrForTF) -> Rec $typeLevelRecords
     instance ($(pure constraintKnownSymbols) , $(pure x) ~ $(pure tupleConstr), $(pure labelSymbolsEquals)) =>  MultiLabel $(pure labelTuple) $(pure x) where
-      label $(pure labelVarsPattern) $(pure tupleVarsPattern) = $expr|]
+      label $(pure labelVarsPattern) $(pure tupleVarsPattern) = $expr |]
