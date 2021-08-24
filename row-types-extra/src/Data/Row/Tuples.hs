@@ -84,8 +84,8 @@ mkMultilabelTupleInstance len = do
 
       tupleConstrForTF =foldl  AppT (TupleT len) (map VarT tupleVarNames)
 
-  ks <- mapM (\s -> [t| KnownSymbol $(pure s) |]) (map VarT labelSymbols)
-  ls <- mapM (\s -> [t| Label $(pure s) |]) (map VarT labelSymbols)
+  ks <- mapM (\s -> [t| KnownSymbol $(varT  s) |]) labelSymbols
+  ls <- mapM (\s -> [t| Label $(varT s) |]) labelSymbols
   es <- zipWithM (\s n -> [t| Label $(pure s) ~ $(pure n) |]) (map VarT labelSymbols) labelNames
 
   let constraintKnownSymbols = foldl  AppT (TupleT len) ks

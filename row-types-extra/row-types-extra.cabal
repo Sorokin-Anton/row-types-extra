@@ -20,11 +20,11 @@ source-repository head
 
 library
   exposed-modules:
+      Data.Row.Extra
+      Data.Row.GetRow
       Data.Row.Instances.Arbitrary
       Data.Row.Instances.Swagger
       Data.Row.Tuples
-      Data.Row.WebRecords
-      Example
   other-modules:
       Paths_row_types_extra
   hs-source-dirs:
@@ -42,9 +42,6 @@ library
     , record-dot-preprocessor
     , record-hasfield
     , row-types
-    , servant-server
-    , servant-swagger
-    , servant-swagger-ui
     , swagger2
     , template-haskell
     , text

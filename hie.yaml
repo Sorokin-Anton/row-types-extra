@@ -1,4 +1,3 @@
 cradle:
   stack:
-    - path: "./src"
-      component: "row-types-extra:lib"
+    stackYaml: "stack.yaml"

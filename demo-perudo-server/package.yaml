@@ -1,4 +1,4 @@
-name:                row-types-extra
+name:                perudo-server
 version:             0.1.0.0
 github:              "githubuser/row-swagger"
 license:             BSD3
@@ -8,17 +8,21 @@ copyright:           "2021 Author name here"
 
 dependencies:
 - base >= 4.7 && < 5
+- row-types-extra
+- servant-swagger-ui
+- servant-server
+- servant-swagger
+- hasql
+- hasql-th
+- uuid
 - row-types
 - aeson
 - text
 - swagger2
-- servant-swagger
 - QuickCheck
 - generic-random
 - constraints
 - bytestring
-- servant-swagger-ui
-- servant-server
 - warp
 - lens
 - generic-lens
@@ -32,3 +36,15 @@ library:
   - -Wall
   - -Werror
   - -j
+
+
+executables:
+  server-example:
+    main: Main.hs
+    source-dirs: app
+    ghc-options:
+    - -Wall
+    - -Werror
+    - -j
+    dependencies: []
+    # - perudo-server
