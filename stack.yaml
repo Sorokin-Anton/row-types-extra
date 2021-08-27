@@ -6,8 +6,7 @@ packages:
 - demo-perudo-server
 
 extra-deps:
-- git: https://github.com/Sorokin-Anton/row-types.git
-  commit: 6167ae4e0ce0633c08fcf5b7cde1d148dd058ece
+- row-types-1.0.1.0@sha256:62d274be07da06aafe2d94b58818234e89e53864d2f65956da2903784c0005a7
 
 # This deps are only for example server
 - hasql-th-0.4.0.9@sha256:56515d8d08d4c68e36899a46624ecd1505608cf6b4c24b5c33aee54bc76e6275,2245

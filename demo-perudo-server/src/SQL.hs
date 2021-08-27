@@ -8,8 +8,8 @@ initSQL :: Session ()
 initSQL = sql [uncheckedSql|
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
-CREATE TABLE IF NOT EXISTS gamerooms (
+CREATE TABLE IF NOT EXISTS games (
   id uuid NOT NULL PRIMARY KEY,
-  max_users
+  max_users int NOT NULL,
 );
 |]

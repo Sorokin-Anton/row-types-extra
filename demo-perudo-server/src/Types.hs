@@ -2,46 +2,59 @@
 {-# LANGUAGE TypeOperators #-}
 {-# LANGUAGE OverloadedLabels #-}
 {-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE DerivingStrategies #-}
+{-# LANGUAGE DeriveAnyClass #-}
 
 module Types where
 
 import Data.Row
-import Data.Text (Text)
 import Data.UUID (UUID)
-import Data.Row.Extra
+import GameLogic (PlayerLogin)
+import GHC.Generics (Generic)
+import Data.Aeson (ToJSON, FromJSON)
+import Data.Swagger (ToSchema)
 
--- Some newtypes to avoid, for example, misuse of `id` field
+-- We use newtypes to avoid, for example, messing `.id` fields of different things
 
 newtype GameID = GameID UUID
+   deriving stock Generic
+   deriving anyclass (ToJSON, FromJSON, ToSchema)
 
-newtype UserName = UserName Text
 
 data Color = Red | Green | Yellow | Blue | Magenta | Cyan | White | Black
+   deriving stock (Generic, Show, Eq, Ord)
+   deriving anyclass (ToJSON, FromJSON, ToSchema)
 
-data GameState = WaitingStart | InProcess | GameFinished
 
-type GameBasicInfo = Rec
+data GameStatus = WaitingStart | InProcess | GameFinished
+   deriving stock (Generic, Show, Eq, Ord)
+   deriving anyclass (ToJSON, FromJSON, ToSchema)
+
+type GameRoomInfo = Rec
     ( "id" .== GameID
-   .+ "state" .== GameState
+   .+ "state" .== GameStatus
    .+ "users" .== [ Rec
-             ( "name" .== UserName
+             ( "login" .== PlayerLogin
             .+ "color" .== Color
              )
                   ]
+
+  .+ "seats" .== Rec
+                (
+        "free" .== Int
+     .+ "total" .== Int
+                )
     )
 
-type GameList = Rec
+type GameRoomsList = Rec
   (
     "count" .== Int
  .+ "games" .== [
-    GameBasicInfo <+ ("seats" .== Rec
-      (
-        "free" .== Int
-     .+ "total" .== Int
-      ))
+    GameRoomInfo
  ]
 
   )
+
 -- >>> :kind! GameList
 -- GameList :: *
 -- = Rec
@@ -52,6 +65,6 @@ type GameList = Rec
 --                   ('R
 --                      '[ "id" ':-> GameID,
 --                         "seats" ':-> Rec ('R '[ "free" ':-> Int, "total" ':-> Int]),
---                         "state" ':-> GameState,
+--                         "state" ':-> GameStatus,
 --                         "users"
---                         ':-> [Rec ('R '[ "color" ':-> Color, "name" ':-> UserName])]])]])
+--                         ':-> [Rec ('R '[ "color" ':-> Color, "name" ':-> PlayerLogin])]])]])

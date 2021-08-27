@@ -20,6 +20,8 @@ source-repository head
 
 library
   exposed-modules:
+      Data.Row.Aeson
+      Data.Row.Aeson.Custom
       Data.Row.Extra
       Data.Row.GetRow
       Data.Row.Instances.Arbitrary
@@ -36,6 +38,7 @@ library
     , base >=4.7 && <5
     , bytestring
     , constraints
+    , deriving-aeson
     , generic-lens
     , generic-random
     , lens

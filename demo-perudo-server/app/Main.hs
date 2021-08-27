@@ -5,7 +5,6 @@
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE TypeApplications #-}
 {-# LANGUAGE FlexibleContexts #-}
-{-# OPTIONS_GHC -F -pgmF=record-dot-preprocessor #-}
 {-# LANGUAGE DerivingStrategies #-}
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 module Main where
@@ -19,13 +18,14 @@ import Data.Swagger
 import Servant.Swagger (HasSwagger(toSwagger))
 import Network.Wai.Handler.Warp (run)
 import Data.Generics.Labels ()
+import Types (GameRoomsList)
 
 
 type API = "swagger.json" :> Get '[JSON] Swagger
                         :<|>  SwaggerSchemaUI "docs" "swagger.json"
                         :<|> AppAPI
 
-type AppAPI = Get '[JSON] Int
+type AppAPI = "gamerooms" :> Get '[JSON] GameRoomsList
 
 appSwagger :: Swagger
 appSwagger = toSwagger (Proxy @AppAPI)
@@ -34,7 +34,7 @@ server :: Server API
 server =
          pure appSwagger
     :<|> swaggerSchemaUIServer appSwagger
-    :<|> pure 0
+    :<|> undefined
 
 
 

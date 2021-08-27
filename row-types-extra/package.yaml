@@ -10,6 +10,7 @@ dependencies:
 - base >= 4.7 && < 5
 - row-types
 - aeson
+- deriving-aeson
 - text
 - swagger2
 - QuickCheck

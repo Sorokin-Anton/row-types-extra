@@ -29,6 +29,8 @@ dependencies:
 - record-hasfield
 - record-dot-preprocessor
 - template-haskell
+- mtl
+- random
 
 library:
   source-dirs: src
@@ -46,5 +48,5 @@ executables:
     - -Wall
     - -Werror
     - -j
-    dependencies: []
-    # - perudo-server
+    dependencies:
+    - perudo-server

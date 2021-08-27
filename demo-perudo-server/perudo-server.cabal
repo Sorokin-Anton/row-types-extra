@@ -39,6 +39,8 @@ library
     , hasql
     , hasql-th
     , lens
+    , mtl
+    , random
     , record-dot-preprocessor
     , record-hasfield
     , row-types
@@ -71,6 +73,9 @@ executable server-example
     , hasql
     , hasql-th
     , lens
+    , mtl
+    , perudo-server
+    , random
     , record-dot-preprocessor
     , record-hasfield
     , row-types
