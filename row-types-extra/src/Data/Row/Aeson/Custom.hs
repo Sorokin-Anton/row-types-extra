@@ -11,6 +11,7 @@
 {-# LANGUAGE UndecidableInstances #-}
 {-# LANGUAGE TypeApplications #-}
 {-# LANGUAGE ScopedTypeVariables #-}
+{-# OPTIONS_GHC -Wno-orphans #-}
 module Data.Row.Aeson.Custom where
 
 import GHC.TypeLits (Symbol)
@@ -36,7 +37,7 @@ instance (AesonOptions (GetAesonOptions opts),
   parseJSON = fmap CustomRec <$> genericParseJSON (aesonOptions @(GetAesonOptions opts))
 
 
-data RecOption = AesonOption Type | SpecifiedName Symbol
+data RecOption = AesonOption Type | SpecifiedRecName Symbol
 
 type family GetAesonOptions (xs :: [RecOption]) :: [Type] where
   GetAesonOptions '[] = '[]
@@ -44,3 +45,9 @@ type family GetAesonOptions (xs :: [RecOption]) :: [Type] where
   GetAesonOptions (_ ': xs) = GetAesonOptions xs
 
 type Snake = '[ 'AesonOption (FieldLabelModifier CamelToSnake) ]
+
+deriving via CustomRec '[] row instance (Generic (Rec row), GToJSON' Value Zero (Rep (Rec row)))
+          => ToJSON (Rec row)
+
+deriving via CustomRec '[] row instance (Generic (Rec row),  GFromJSON Zero (Rep (Rec row)))
+          => FromJSON (Rec row)

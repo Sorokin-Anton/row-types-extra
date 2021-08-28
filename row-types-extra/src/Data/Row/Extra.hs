@@ -18,11 +18,12 @@ module Data.Row.Extra (
   module Data.Row.Records,
   module Data.Row.Extra,
   module Data.Row.GetRow,
+  module Data.Row.Aeson.Custom,
   MultiLabel(label)
   ) where
 import Data.Row
 -- import Data.Row.Records
-import Data.Row.Aeson ()
+import Data.Row.Aeson.Custom
 import Data.Row.Instances.Swagger ()
 import Data.Row.Instances.Arbitrary ()
 import Data.Generics.Labels ()
