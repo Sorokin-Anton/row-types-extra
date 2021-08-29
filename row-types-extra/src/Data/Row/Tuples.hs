@@ -41,7 +41,7 @@ instance KnownSymbol l =>  MultiLabel (Label l) a where
 
 
 -- Example: see `Constraint trick` for understanding
--- I don't know why this can't compile without braces in `a .== b .+ (c .== d .+ e .== f)`
+-- This can't compile without braces in `a .== b .+ (c .== d .+ e .== f)` cause asymettric constraint in `.+`
 
 -- type instance  LabelF (Label l1, Label l2, Label l3) (a1 , a2, a3) = (a1, a2, a3) -> Rec ( l1 .== a1 .+ (l2 .== a2 .+ l3 .== a3))
 -- instance ((KnownSymbol l1,

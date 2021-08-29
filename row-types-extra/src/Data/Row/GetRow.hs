@@ -12,15 +12,18 @@ import Data.Row
 import Data.Row.Records (NativeRow, fromNative, FromNative)
 import Data.Kind (Type)
 import Data.Row.Dictionaries (Unconstrained1)
+import Data.Row.Aeson.Custom
 
 type family RowType (a :: *) :: Row Type where
   RowType (Rec a) = a
+  RowType (CustomRec mods a) = a
   RowType e = NativeRow e
 
 data GetRowStrategy = SimpleExtractRow | WithGeneric
 
 type family RowStrategy a :: GetRowStrategy where
   RowStrategy (Rec a) = 'SimpleExtractRow
+  RowStrategy (CustomRec mods a) = 'SimpleExtractRow
   RowStrategy _ = 'WithGeneric
 
 -- Without helper class, instance `... => GetRow a` will not allow us to write
@@ -28,6 +31,9 @@ type family RowStrategy a :: GetRowStrategy where
 -- which allows parametrize different instances with type families
 class strat ~ RowStrategy a => GetRow' a (strat :: GetRowStrategy) where
   getRow' :: a -> Rec (RowType a)
+
+instance GetRow' (CustomRec mods a) 'SimpleExtractRow where
+  getRow' (CustomRec a) = a
 
 instance GetRow' (Rec a) 'SimpleExtractRow where
   getRow' = id

@@ -22,6 +22,7 @@ library
   exposed-modules:
       Data.Row.Aeson.Custom
       Data.Row.Extra
+      Data.Row.Extra.Utils
       Data.Row.GetRow
       Data.Row.Instances.Arbitrary
       Data.Row.Instances.Swagger
