@@ -2,24 +2,38 @@
 {-# LANGUAGE UndecidableInstances #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# OPTIONS_GHC -Wno-orphans #-}
-{-# OPTIONS_GHC -Wno-simplifiable-class-constraints #-}
 {-# LANGUAGE DataKinds #-}
+{-# LANGUAGE TypeApplications #-}
+{-# LANGUAGE ScopedTypeVariables #-}
+{-# LANGUAGE StandaloneDeriving #-}
+{-# LANGUAGE DerivingVia #-}
+{-# LANGUAGE MonoLocalBinds #-}
+
 module Data.Row.Instances.Swagger where
 
 import Data.Row
 import Data.Swagger
-import GHC.Generics (Generic (Rep))
-import Data.Swagger.Internal.Schema (GToSchema, named)
-import Data.Swagger.Internal.TypeShape ( TypeHasSimpleShape )
-import Data.Typeable (Typeable, typeRep, typeRepFingerprint)
+import Data.Swagger.Internal.Schema (named, GToSchema)
+import Data.Typeable (Typeable, typeRep, typeRepFingerprint, Proxy (Proxy))
 import Data.Text (pack)
+import Data.Row.Aeson.Custom
+import qualified Deriving.Aeson as AesonD
+import GHC.Generics (Generic (Rep))
+import Data.Swagger.Internal.TypeShape (TypeHasSimpleShape)
 
-instance (Typeable a
+instance (Typeable a, Typeable opts
+  , AesonD.AesonOptions (GetAesonOptions opts)
   , Generic (Rec a)
   , GToSchema (Rep (Rec a))
   , TypeHasSimpleShape (Rec a) "genericDeclareSchemaUnrestricted")
-  => ToSchema (Rec a)
+  => ToSchema (CustomRec opts a)
   where
   declareNamedSchema proxy =
     fmap (named $ "Open product <" <> pack (show $ typeRepFingerprint $ typeRep proxy) <> ">")
-   . genericDeclareSchema defaultSchemaOptions $ proxy
+   . genericDeclareSchema (fromAesonOptions (AesonD.aesonOptions @(GetAesonOptions opts))) $ (Proxy :: Proxy (Rec a))
+
+deriving via CustomRec '[] a instance
+  (Typeable a, Generic (Rec a),
+   GToSchema (Rep (Rec a)),
+   TypeHasSimpleShape (Rec a) "genericDeclareSchemaUnrestricted")
+   => ToSchema (Rec a)
