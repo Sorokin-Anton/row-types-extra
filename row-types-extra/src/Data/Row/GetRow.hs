@@ -12,7 +12,7 @@ import Data.Row
 import Data.Row.Records (NativeRow, fromNative, FromNative)
 import Data.Kind (Type)
 import Data.Row.Dictionaries (Unconstrained1)
-import Data.Row.Aeson.Custom
+import Data.Row.Records.CustomRec
 
 type family RowType (a :: *) :: Row Type where
   RowType (Rec a) = a

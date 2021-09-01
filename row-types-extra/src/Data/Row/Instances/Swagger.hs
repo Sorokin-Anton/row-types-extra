@@ -16,7 +16,7 @@ import Data.Swagger
 import Data.Swagger.Internal.Schema (named, GToSchema)
 import Data.Typeable (Typeable, typeRep, typeRepFingerprint, Proxy (Proxy))
 import Data.Text (pack)
-import Data.Row.Aeson.Custom
+import Data.Row.Records.CustomRec
 import qualified Deriving.Aeson as AesonD
 import GHC.Generics (Generic (Rep))
 import Data.Swagger.Internal.TypeShape (TypeHasSimpleShape)

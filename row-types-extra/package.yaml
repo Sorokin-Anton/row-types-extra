@@ -23,6 +23,7 @@ dependencies:
 - record-hasfield
 - record-dot-preprocessor
 - template-haskell
+- data-default
 
 library:
   source-dirs: src

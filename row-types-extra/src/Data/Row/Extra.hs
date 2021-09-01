@@ -18,14 +18,14 @@ module Data.Row.Extra (
   module Data.Row.Records,
   module Data.Row.Extra,
   module Data.Row.GetRow,
-  module Data.Row.Aeson.Custom,
+  module Data.Row.Records.CustomRec,
   MultiLabel(label)
   ) where
 import Data.Row
--- import Data.Row.Records
-import Data.Row.Aeson.Custom
+import Data.Row.Records.CustomRec
 import Data.Row.Instances.Swagger ()
 import Data.Row.Instances.Arbitrary ()
+import Data.Row.Instances.Aeson ()
 import Data.Generics.Labels ()
 import GHC.Records.Extra (HasField(..))
 import Data.Row.Records (update, rename, restrict, NativeRow, fromNative, FromNative)

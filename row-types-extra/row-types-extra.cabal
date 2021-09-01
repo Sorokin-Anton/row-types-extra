@@ -20,12 +20,14 @@ source-repository head
 
 library
   exposed-modules:
-      Data.Row.Aeson.Custom
       Data.Row.Extra
       Data.Row.Extra.Utils
       Data.Row.GetRow
+      Data.Row.Instances.Aeson
       Data.Row.Instances.Arbitrary
+      Data.Row.Instances.Default
       Data.Row.Instances.Swagger
+      Data.Row.Records.CustomRec
       Data.Row.Tuples
   other-modules:
       Paths_row_types_extra
@@ -38,6 +40,7 @@ library
     , base >=4.7 && <5
     , bytestring
     , constraints
+    , data-default
     , deriving-aeson
     , generic-lens
     , generic-random
