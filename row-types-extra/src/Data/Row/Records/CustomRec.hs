@@ -14,6 +14,8 @@ import           GHC.TypeLits         (Symbol)
 
 data RecOption = AesonOption Type | SpecifiedRecName Symbol | Other Type
 
+type family DefaultRecOptions :: [RecOption]
+
 -- | We can add some `RecOption`s to our record for specifying instances
 newtype CustomRec (mods :: [RecOption]) (row :: Row Type) = CustomRec (Rec row)
   deriving stock Generic

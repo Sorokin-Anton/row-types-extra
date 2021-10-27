@@ -29,8 +29,10 @@ instance (AesonD.AesonOptions (GetAesonOptions opts),
 
 
 
-deriving via CustomRec '[] row instance (Generic (Rec row), GToJSON' Value Zero (Rep (Rec row)))
-          => ToJSON (Rec row)
+deriving via CustomRec DefaultRecOptions row instance
+  (AesonD.AesonOptions (GetAesonOptions DefaultRecOptions), Generic (Rec row), GToJSON' Value Zero (Rep (Rec row)))
+    => ToJSON (Rec row)
 
-deriving via CustomRec '[] row instance (Generic (Rec row),  GFromJSON Zero (Rep (Rec row)))
+deriving via CustomRec DefaultRecOptions row instance
+  (AesonD.AesonOptions (GetAesonOptions DefaultRecOptions), Generic (Rec row),  GFromJSON Zero (Rep (Rec row)))
           => FromJSON (Rec row)

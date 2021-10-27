@@ -32,8 +32,8 @@ instance (Typeable a, Typeable opts
     fmap (named $ "Open product <" <> pack (show $ typeRepFingerprint $ typeRep proxy) <> ">")
    . genericDeclareSchema (fromAesonOptions (AesonD.aesonOptions @(GetAesonOptions opts))) $ (Proxy :: Proxy (Rec a))
 
-deriving via CustomRec '[] a instance
-  (Typeable a, Generic (Rec a),
+deriving via CustomRec DefaultRecOptions a instance
+  (Typeable DefaultRecOptions, AesonD.AesonOptions (GetAesonOptions DefaultRecOptions), Typeable a, Generic (Rec a),
    GToSchema (Rep (Rec a)),
    TypeHasSimpleShape (Rec a) "genericDeclareSchemaUnrestricted")
    => ToSchema (Rec a)
