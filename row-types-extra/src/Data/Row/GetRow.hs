@@ -14,7 +14,7 @@ import Data.Kind (Type)
 import Data.Row.Dictionaries (Unconstrained1)
 import Data.Row.Records.CustomRec
 
-type family RowType (a :: *) :: Row Type where
+type family RowType (a :: Type) :: Row Type where
   RowType (Rec a) = a
   RowType (CustomRec mods a) = a
   RowType e = NativeRow e
